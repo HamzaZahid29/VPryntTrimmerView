@@ -64,7 +64,7 @@ class AssetVideoScrollView: UIScrollView {
         let thumbnailCount = Int(ceil(newContentSize.width / thumbnailSize.width))
         addThumbnailViews(thumbnailCount, size: thumbnailSize)
         let timesForThumbnail = getThumbnailTimes(for: asset, numberOfThumbnails: thumbnailCount)
-        generateImages(for: asset, at: timesForThumbnail, with: thumbnailSize, visibleThumnails: visibleThumbnailsCount)
+        generateImages(for: asset, at: timesForThumbnail, with: thumbnailSize, visibleThumbnails: visibleThumbnailsCount)
     }
 
     private func getThumbnailFrameSize(from asset: AVAsset) -> CGSize? {
@@ -126,7 +126,7 @@ class AssetVideoScrollView: UIScrollView {
         return timesForThumbnails
     }
 
-    private func generateImages(for asset: AVAsset, at times: [NSValue], with maximumSize: CGSize, visibleThumnails: Int) {
+    private func generateImages(for asset: AVAsset, at times: [NSValue], with maximumSize: CGSize, visibleThumbnails: Int) {
         generator = AVAssetImageGenerator(asset: asset)
         generator?.appliesPreferredTrackTransform = true
 
@@ -139,7 +139,7 @@ class AssetVideoScrollView: UIScrollView {
                 DispatchQueue.main.async(execute: { [weak self] () -> Void in
 
                     if count == 0 {
-                        self?.displayFirstImage(cgimage, visibleThumbnails: visibleThumnails)
+                        self?.displayFirstImage(cgimage, visibleThumbnails: visibleThumbnails)
                     }
                     self?.displayImage(cgimage, at: count)
                     count += 1
