@@ -57,7 +57,7 @@ public class ThumbSelectorView: AVAssetTimeSelector {
     }
 
     private func setupThumbView() {
-
+        
         thumbView.translatesAutoresizingMaskIntoConstraints = false
         thumbView.layer.borderWidth = 2.0
         thumbView.layer.borderColor = thumbBorderColor.cgColor

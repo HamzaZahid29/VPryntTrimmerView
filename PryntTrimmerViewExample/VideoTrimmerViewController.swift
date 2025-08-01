@@ -50,6 +50,7 @@ class VideoTrimmerViewController: AssetSelectionViewController {
     override func loadAsset(_ asset: AVAsset) {
 
         trimmerView.asset = asset
+        trimmerView.minDuration = 1
         trimmerView.delegate = self
         addVideoPlayer(with: asset, playerView: playerView)
     }

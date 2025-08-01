@@ -52,19 +52,29 @@ class AssetVideoScrollView: UIScrollView {
     }
 
     internal func regenerateThumbnails(for asset: AVAsset) {
-        guard let thumbnailSize = getThumbnailFrameSize(from: asset), thumbnailSize.width != 0 else {
+        guard let originalSize = getThumbnailFrameSize(from: asset), originalSize.width != 0 else {
             print("Could not calculate the thumbnail size.")
             return
         }
 
         generator?.cancelAllCGImageGeneration()
         removeFormerThumbnails()
+
+        // Set fixed width — contentView width = scrollView width
         let newContentSize = setContentSize(for: asset)
-        let visibleThumbnailsCount = Int(ceil(frame.width / thumbnailSize.width))
-        let thumbnailCount = Int(ceil(newContentSize.width / thumbnailSize.width))
-        addThumbnailViews(thumbnailCount, size: thumbnailSize)
-        let timesForThumbnail = getThumbnailTimes(for: asset, numberOfThumbnails: thumbnailCount)
-        generateImages(for: asset, at: timesForThumbnail, with: thumbnailSize, visibleThumbnails: visibleThumbnailsCount)
+
+        let duration = asset.duration.seconds
+
+        // Limit thumbnails to max 15
+        let numberOfThumbnails = min(15, max(1, Int(ceil(duration))))
+
+        // Spread thumbnails across available width
+        let thumbnailWidth = newContentSize.width / CGFloat(numberOfThumbnails)
+        let thumbnailSize = CGSize(width: thumbnailWidth, height: originalSize.height)
+
+        addThumbnailViews(numberOfThumbnails, size: thumbnailSize)
+        let timesForThumbnail = getThumbnailTimes(for: asset, numberOfThumbnails: numberOfThumbnails)
+        generateImages(for: asset, at: timesForThumbnail, with: thumbnailSize, visibleThumbnails: numberOfThumbnails)
     }
 
     private func getThumbnailFrameSize(from asset: AVAsset) -> CGSize? {
@@ -83,12 +93,14 @@ class AssetVideoScrollView: UIScrollView {
     }
 
     private func setContentSize(for asset: AVAsset) -> CGSize {
+        // Disable scroll and lock content width
+        isScrollEnabled = false
 
-        let contentWidthFactor = CGFloat(max(1, asset.duration.seconds / maxDuration))
         widthConstraint?.isActive = false
-        widthConstraint = contentView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: contentWidthFactor)
+        widthConstraint = contentView.widthAnchor.constraint(equalTo: widthAnchor)
         widthConstraint?.isActive = true
         layoutIfNeeded()
+
         return contentView.bounds.size
     }
 
