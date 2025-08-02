@@ -26,14 +26,14 @@ public protocol TrimmerViewDelegate: AnyObject {
     // MARK: Color Customization
 
     /// The color of the main border of the view
-    @IBInspectable public var mainColor: UIColor = UIColor.orange {
+    @IBInspectable public var mainColor: UIColor = UIColor(red: 1.0, green: 0.612, blue: 0.082, alpha: 1.0) {
         didSet {
             updateMainColor()
         }
     }
 
     /// The color of the handles on the side of the view
-    @IBInspectable public var handleColor: UIColor = UIColor.gray {
+    @IBInspectable public var handleColor: UIColor = UIColor(red: 1.0, green: 0.612, blue: 0.082, alpha: 1.0) {
         didSet {
            updateHandleColor()
         }
@@ -57,6 +57,30 @@ public protocol TrimmerViewDelegate: AnyObject {
     @IBInspectable public var handleWidth: CGFloat = 15 {
         didSet {
             updateHandleWidth()
+        }
+    }
+    
+    @IBInspectable public var leftHandleBackgroundColor: UIColor = .orange {
+        didSet {
+            leftHandleView.backgroundColor = leftHandleBackgroundColor
+        }
+    }
+
+    @IBInspectable public var rightHandleBackgroundColor: UIColor = .orange {
+        didSet {
+            rightHandleView.backgroundColor = rightHandleBackgroundColor
+        }
+    }
+
+    @IBInspectable public var leftHandleKnobColor: UIColor = .white {
+        didSet {
+            leftHandleKnob.backgroundColor = leftHandleKnobColor
+        }
+    }
+
+    @IBInspectable public var rightHandleKnobColor: UIColor = .white {
+        didSet {
+            rightHandleKnob.backgroundColor = rightHandleKnobColor
         }
     }
     // MARK: Interface
@@ -128,7 +152,7 @@ public protocol TrimmerViewDelegate: AnyObject {
     private func setupHandleView() {
 
         leftHandleView.isUserInteractionEnabled = true
-        leftHandleView.layer.cornerRadius = 2.0
+        leftHandleView.layer.cornerRadius = 4.0
         leftHandleView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(leftHandleView)
 

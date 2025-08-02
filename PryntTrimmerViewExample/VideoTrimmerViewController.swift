@@ -27,8 +27,13 @@ class VideoTrimmerViewController: AssetSelectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        trimmerView.handleColor = UIColor.white
-//        trimmerView.mainColor = UIColor.darkGray
-        trimmerView.handleWidth = 8
+        trimmerView.mainColor = UIColor(red: 0.957, green: 0.125, blue: 0.149, alpha: 1.0)
+        trimmerView.rightHandleBackgroundColor = UIColor(red: 0.957, green: 0.125, blue: 0.149, alpha: 1.0)
+        trimmerView.leftHandleBackgroundColor = UIColor(red: 1.0, green: 0.612, blue: 0.082, alpha: 1.0)
+        trimmerView.leftHandleKnobColor = UIColor(red: 1.0, green: 0.612, blue: 0.082, alpha: 1.0)
+        trimmerView.rightHandleKnobColor = UIColor(red: 0.957, green: 0.125, blue: 0.149, alpha: 1.0)
+
+        trimmerView.handleWidth = 6
     }
 
     @IBAction func selectAsset(_ sender: Any) {
