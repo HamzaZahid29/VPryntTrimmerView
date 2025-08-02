@@ -38,7 +38,7 @@ public protocol TrimmerViewDelegate: AnyObject {
            updateHandleColor()
         }
     }
-
+// empty commit
     /// The color of the position indicator
     @IBInspectable public var positionBarColor: UIColor = UIColor.white {
         didSet {
