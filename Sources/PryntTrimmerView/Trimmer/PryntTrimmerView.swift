@@ -54,6 +54,11 @@ public protocol TrimmerViewDelegate: AnyObject {
         }
     }
 
+    @IBInspectable public var handleWidth: CGFloat = 15 {
+        didSet {
+            updateHandleWidth()
+        }
+    }
     // MARK: Interface
 
     public weak var delegate: TrimmerViewDelegate?
@@ -77,7 +82,6 @@ public protocol TrimmerViewDelegate: AnyObject {
     private var rightConstraint: NSLayoutConstraint?
     private var positionConstraint: NSLayoutConstraint?
 
-    private let handleWidth: CGFloat = 15
 
     /// The minimum duration allowed for the trimming. The handles won't pan further if the minimum duration is attained.
     public var minDuration: Double = 3
@@ -107,7 +111,7 @@ public protocol TrimmerViewDelegate: AnyObject {
     }
 
     private func setupTrimmerView() {
-        trimView.layer.borderWidth = 2.0
+        trimView.layer.borderWidth = 1.0
         trimView.layer.cornerRadius = 2.0
         trimView.translatesAutoresizingMaskIntoConstraints = false
         trimView.isUserInteractionEnabled = false
@@ -216,6 +220,21 @@ public protocol TrimmerViewDelegate: AnyObject {
         rightHandleView.backgroundColor = mainColor
     }
 
+    private func updateHandleWidth() {
+        leftHandleView.widthAnchor.constraint(equalToConstant: handleWidth).isActive = true
+        rightHandleView.widthAnchor.constraint(equalToConstant: handleWidth).isActive = true
+
+        // Update preview constraints
+        for constraint in constraints {
+            if constraint.firstItem === assetPreview &&
+               (constraint.firstAttribute == .left || constraint.firstAttribute == .right) {
+                removeConstraint(constraint)
+            }
+        }
+        constrainAssetPreview()
+        layoutIfNeeded()
+    }
+    
     private func updateHandleColor() {
         leftHandleKnob.backgroundColor = handleColor
         rightHandleKnob.backgroundColor = handleColor
